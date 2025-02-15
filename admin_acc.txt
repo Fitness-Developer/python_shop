@@ -1,3 +1,4 @@
 user: Sasha
 password: Global228228
 запуск Celery: celery -A project worker --loglevel=info --pool=solo
+запуск Redis: redis-server redis.windows.conf
