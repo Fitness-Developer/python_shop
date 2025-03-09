@@ -1,0 +1,57 @@
+/* custom_admin.css */
+
+body {
+  background-color: #f4f4f4; /* Светлый фон */
+  font-family: 'Arial', sans-serif; /* Шрифт */
+}
+
+#header {
+  background-color: #213c57; /* Цвет заголовка */
+  color: white;
+}
+
+#header h1 {
+  font-size: 24px;
+}
+
+.navbar {
+  background-color: #0056b3; /* Цвет навигации */
+}
+
+.navbar a {
+  color: white; /* Цвет ссылок */
+}
+
+.navbar a:hover {
+  background-color: #004085; /* Цвет при наведении */
+}
+
+.dashboard-module {
+  border: 1px solid #007bff; /* Обводка модулей */
+  border-radius: 8px; /* Закругление углов */
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: white; /* Фон модулей */
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #234362; /* Цвет заголовков таблицы */
+  color: white;
+}
+a {
+  color: #00aaff !important; /* Цвет всех ссылок */
+}
+a:hover {
+  color: #bbc1c4 !important; /* Цвет всех ссылок при наведении (можно настроить) */
+}

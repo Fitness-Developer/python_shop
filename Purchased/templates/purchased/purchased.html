@@ -1,0 +1,34 @@
+{% extends 'products/base.html' %}
+{% load static %}
+{% block content %}
+
+<h1>Ваша корзина</h1>
+<h2 class="count">Заказы: {{ purchaseds.count }}</h2>
+
+{% if purchaseds.count > 0 %}
+    <div class="elements-container">
+        {% for purchased in purchaseds %}
+            <div class="element">
+                <div class="blog_text">
+                    <h2 class="top">{{ purchased.title }}</h2>
+                    <img class="imgbask" src="{{ purchased.image.url }}" alt="{{ purchased.title }}">
+                    <h5>{{ purchased.description }}</h5>
+                    <p>{{ purchased.price }} р.</p>
+                    <h3>{{ purchased.status }}</h3>
+                    {% if purchased.status == 'В ожидании' %}
+                        <form action="{% url 'delete_purchased' purchased.id %}" method="post" onsubmit="return confirm('Вы уверены, что хотите отменить этот заказ?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btnbuy">Отменить заказ</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="no_elem">
+        <p>У вас пока нет заказов 😔.</p>
+    </div>
+{% endif %}
+
+{% endblock %}

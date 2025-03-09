@@ -1,0 +1,57 @@
+{% extends 'products/base.html' %}
+{% load static %}
+{% block content %}
+
+<h1>{{ product.title }}</h1>
+<div class="buyfon">
+    <img class="buyimg" src="{{ product.image.url }}" />
+        <div class="buysec">
+            <div>{{ product.description }}</div></br>
+            <div class="bprice">{{ product.price }} р.</div></br>
+            {% if error_message %}
+
+            <div class="error-message">{{ error_message }}</div>
+
+            {% else %}
+
+            <form action="{% url 'payform' product.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btnbuy">Купить</button>
+            </form>
+
+            {% endif %}
+        </div>
+
+
+</div>
+<h1>Отзывы о товаре</h1>
+
+
+
+<!-- Список существующих отзывов -->
+<ul>
+    <h2 class="count">Отзывы: {{reviews.count}}</h2>
+    {% for review in reviews %}
+
+        <div class="element">
+
+            <div class="blog_text">
+                <h2 class="top">{{ review.author }}</h2>
+                <h5>{{ review.created|date:'d.m.Y' }}</h5><br/>
+                <p>{{ review.memo }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</ul>
+{% if success %}
+    <h2 style="text-align: center;color: green;">{{ success }}</h2>
+{% endif %}
+<h2 style="text-align: center;color: orangered ">{{ error }}</h2>
+<!-- Форма для добавления отзыва -->
+<form action="" method="post" class="bg">
+    {% csrf_token %}
+    {{ review_form.memo }}
+    {{ review_form.memo.errors }}
+    <button type="submit" class="btn">Добавить комментарий</button>
+</form>
+{% endblock%}

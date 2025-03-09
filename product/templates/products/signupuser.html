@@ -1,0 +1,23 @@
+{% extends 'products/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<h1>Регистрация: </h1>
+
+<h2 style="text-align: center;color: orangered ">{{ error }}</h2>
+
+<div class="log">
+    <form method="post" class="register bg">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn">Зарегестрироваться</button>
+    </form>
+    <div class="google">
+        <a href="{% url 'social:begin' 'google-oauth2' %}" class="google bt">
+            <img class="googleimg" src="{% static 'products/google.png' %}"> Войти через Google
+        </a>
+    </div>
+    
+</div>
+{% endblock %}

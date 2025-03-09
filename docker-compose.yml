@@ -1,0 +1,49 @@
+
+services:
+  web:
+    build: .
+    command: bash -c "python manage.py migrate && daphne -b 0.0.0.0 -p 8000 project.asgi:application"
+    volumes:
+      - .:/project
+      - ./db.sqlite3:/project/db.sqlite3
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - rabbitmq
+    environment:
+      - DJANGO_SETTINGS_MODULE=project.settings
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
+
+  worker:
+    build: .
+    command: celery -A project worker --loglevel=info -B
+    volumes:
+      - .:/project
+    depends_on:
+      - redis
+      - rabbitmq
+    environment:
+      - DJANGO_SETTINGS_MODULE=project.settings
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./staticfiles:/usr/share/nginx/html/static
+      - ./media:/var/www/media
+    depends_on:
+      - web

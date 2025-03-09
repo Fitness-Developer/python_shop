@@ -1,0 +1,34 @@
+{% extends 'products/base.html' %}
+{% block content %}
+
+<h1>Отзывы клиентов о магазине</h1>
+<h2 class="count">Отзывы: {{reviews.count}}</h2>
+{% for review in reviews %}
+    <div class="element">
+
+        <div class="blog_text">
+            <h2 class="top">{{ review.author }}</h2>
+            <h5>{{ review.created|date:'d.m.Y' }}</h5><br/>
+            <p>{{ review.memo }}</p>
+        </div>
+    </div>
+{% endfor %}
+{% if success %}
+    <h2 style="text-align: center;color: green;">{{ success }}</h2>
+{% endif %}
+<h2 style="text-align: center;color: orangered ">{{ error }}</h2>
+<form method="post" class="bg">
+    {% if user.is_authenticated %}
+    {% csrf_token %}
+    <p>Пользователь: {{author.username}}</p>
+    {{ form.memo }}
+    <div class="center">
+        <button class="btn">Оставить отзыв</button>
+    </div>
+    {% else %}
+    <p>Зарегестрируйтесь, чтобы оставить отзыв!</p>
+
+    {% endif %}
+</form><br/>
+
+{% endblock%}

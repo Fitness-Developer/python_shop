@@ -1,0 +1,21 @@
+{% extends 'products/base.html' %}
+{% load static %}
+{% block content %}
+<h1>Оформите заказ для продукта {{product.title}}</h1>
+<div class="formpay">
+    <div class="container">
+
+        <form method="post" class="bg">
+            <p>{{product.title}}</p>
+            <p>{{product.description}}</p>
+
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn" type="submit" >Оплатить</button>
+        </form>
+    </div>
+
+</div>
+
+
+{% endblock%}

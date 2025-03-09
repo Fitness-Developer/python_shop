@@ -1,0 +1,67 @@
+{% extends 'products/base.html' %}
+{% load static %}
+{% block content %}
+<h1>{{ room_name }}</h1>
+<div id="chat-log" style="border: 1px solid #ccc; padding: 10px; margin: auto 100px auto 100px; height: 200px; overflow-y: scroll; background-color: #f9f9f9; margin-bottom: 10px;">
+    {% for message in messages %}
+        <p><strong>{{ message.user.username }}:</strong> {{ message.message }}</p>
+    {% endfor %}
+</div>
+
+<div id="error-message" style="color: red; margin-left: 100px;"></div>
+
+<form id="chat-message-form" method="post" action="{% url 'send_message' room_name=room_name %}">
+    {% csrf_token %}
+    <input id="chat-message-input" name="message" type="text" size="100" placeholder="Type your message here..." style="margin: auto auto 100px 100px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+    <input id="chat-message-submit" type="submit" value="Send" style="padding: 10px; border: none; background-color: #4CAF50; color: white; border-radius: 5px; cursor: pointer;">
+</form>
+
+<script>
+    const roomName = "{{ room_name }}";
+    const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+
+        // Проверяем наличие ошибки
+        if (data.error) {
+            document.querySelector('#error-message').innerText = data.error;
+        } else {
+            // Добавляем сообщение в чат лог
+            const newMessage = '<p><strong>' + data.username + ':</strong> ' + data.message + '</p>';
+            document.querySelector('#chat-log').innerHTML += newMessage;
+            document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
+            document.querySelector('#error-message').innerText = ''; // Очищаем сообщение об ошибке
+        }
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.querySelector('#chat-message-form').onsubmit = function(e) {
+        e.preventDefault(); // Предотвращаем стандартное поведение формы
+
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+
+        // Отправляем сообщение через WebSocket
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            'username': '{{ user.username }}' // передаем имя пользователя
+        }));
+
+        // Очищаем поле ввода
+        messageInputDom.value = '';
+    };
+
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // Enter key
+            e.preventDefault(); // Предотвращаем отправку формы
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+</script>
+
+{% endblock %}

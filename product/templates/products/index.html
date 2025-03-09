@@ -1,0 +1,72 @@
+{% extends 'products/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+
+
+
+<div class="slider">
+      {% if products %}
+      <!-- list Items -->
+      <div class="list">
+          {% for product in products %}
+        <div class="item active">
+          <img src="{{ product.image.url }}" />
+          <div class="content">
+            <p>Sneakers</p>
+            <h2>{{ product.title }}</h2>
+            <p>
+              {{ product.description }}
+            </p>
+          </div>
+        </div>
+          {% endfor %}
+      </div>
+        <!-- Search -->
+    <div class="form_search">
+    <form id="search" class="form" action="{% url 'index' %}" method="get">
+            <div class="form__field">
+
+              <input class="input_search" id="formInput#search" type="text" name="search_query" value="{{search_query}}"
+                placeholder="Найти нужный вариант" />
+            </div>
+
+            <input class="btn inpsearch" type="submit" value="Поиск" />
+    </form>
+    </div>
+      <!-- button arrows -->
+      <div class="arrows">
+        <button id="prev"><</button>
+        <button id="next">></button>
+      </div>
+      <!-- thumbnail -->
+      <div class="thumbnail">
+          {% for product in products %}
+
+        <div class="item active">
+
+          <img src="{{ product.image.url }}" />
+
+          <div class="content">
+              <p>{{ product.title }}</p>
+              <p class="price">{{ product.price }} р.</p>
+              <a href="{% url 'detail' product.id %}"><button class="buybtn">+</button></a>
+          </div>
+
+        </div>
+          {% endfor %}
+      </div>
+      {% else %}
+
+        <div class="no_elem">
+            <p>У нас пока нет товаров или не добавленны новые😔.<br/>
+                Заходите позже :)
+            </p>
+        </div>
+
+      {% endif %}
+</div>
+
+{% endblock %}
