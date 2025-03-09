@@ -24,6 +24,7 @@ from uuid import uuid4
 from django.core.mail import send_mail
 from django.conf import settings
 import logging
+import socket
 
 Configuration.configure('1010382', 'test_3OArUjeWFRS8sjIa44FSJeIKMOlH6pDVBL5Q6kjuk6A')
 def index(request):
@@ -215,6 +216,12 @@ def payform(request, product_id):
             request.session['product_id'] = product_id  # Сохранение product_id в сессии
 
             # Создание платежа в YooKassa
+
+            if request.get_host().startswith('localhost'):
+                base_url = "http://localhost:8000"
+            else:
+                base_url = "http://127.0.0.1:8000"
+
             payment = Payment.create({
                 "amount": {
                     "value": str(product.price),
@@ -222,7 +229,7 @@ def payform(request, product_id):
                 },
                 "confirmation": {
                     "type": "redirect",
-                    "return_url": f"http://127.0.0.1:8000/{product_id}/success/",  # URL для перенаправления после успешной оплаты
+                    "return_url": f"{base_url}/{product_id}/success/",  # URL для перенаправления после успешной оплаты
                 },
                 "capture": True,
                 "description": f"Оплата за {product.title}",
