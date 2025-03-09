@@ -220,7 +220,7 @@ def payform(request, product_id):
             if request.get_host().startswith('localhost'):
                 base_url = "http://localhost:8000"
             else:
-                base_url = "http://127.0.0.1:8000"
+                base_url = "https://python-shop.onrender.com"
 
             payment = Payment.create({
                 "amount": {
