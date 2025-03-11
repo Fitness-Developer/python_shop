@@ -6,7 +6,7 @@ COPY requirements.txt .
 RUN python -m venv /opt/venv \
     && /opt/venv/bin/pip install --upgrade pip \
     && /opt/venv/bin/pip install -r requirements.txt \
-    && /opt/venv/bin/pip install pysqlite3-binary # Установка pysqlite3-binary - здесь важно
+    && /opt/venv/bin/pip install pysqlite3-binary
 
 COPY . .
 
@@ -14,4 +14,4 @@ ENV PATH="/opt/venv/bin:$PATH"
 ENV DJANGO_SETTINGS_MODULE=project.settings
 ENV CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "project.asgi:application"]
+CMD ["daphne", "-b", "0.0.0.0:8000", "project.asgi:application"]
