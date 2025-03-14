@@ -25,7 +25,7 @@ COPY --from=builder /project/venv /project/venv
 COPY --from=redis-stage /usr/local/bin/redis-server /usr/local/bin/
 
 # Добавляем RabbitMQ напрямую, без копирования
-COPY rabbitmq_env /opt/rabbitmq/ #Если нужно, но вероятно, не нужно
+COPY rabbitmq_env /opt/rabbitmq/
 COPY ./entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
