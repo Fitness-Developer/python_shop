@@ -33,6 +33,6 @@ COPY --from=rabbitmq-stage /usr/sbin/rabbitmq-server /usr/sbin/
 COPY --from=rabbitmq-stage /usr/sbin/rabbitmq_env /usr/sbin/
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
-ENV PATH="/usr/local/bin:/usr/sbin:$PATH" # Добавлено для daphne и rabbitmq-server
+ENV PATH="/usr/local/bin:/usr/sbin:$PATH"
 EXPOSE 8000
 CMD ["/project/entrypoint.sh"]
