@@ -1,0 +1,2 @@
+RABBITMQ_NODENAME=rabbit@localhost
+RABBITMQ_LOGS=C:Program Files\RabbitMQ Server\rabbitmq_server-4.0.4log
