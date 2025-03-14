@@ -1,6 +1,6 @@
 # Stage 1: Build the application
 FROM python:3.11-bullseye AS builder
-WORKDIR /app
+WORKDIR /project
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
