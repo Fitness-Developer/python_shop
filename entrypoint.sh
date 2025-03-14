@@ -1,6 +1,11 @@
 #!/bin/bash
+
+# Активируем виртуальную среду
+source /project/venv/bin/activate
+
+# Используйте абсолютные пути к исполняемым файлам
+/opt/rabbitmq/sbin/rabbitmq-server -detached &
 /usr/local/bin/redis-server &
-/usr/sbin/rabbitmq-server -detached &
 
 sleep 10
 
