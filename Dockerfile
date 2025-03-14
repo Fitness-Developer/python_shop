@@ -25,7 +25,7 @@ WORKDIR /project
 COPY --from=builder /project /project
 COPY --from=redis-stage /usr/local/bin/redis-server /usr/local/bin/
 COPY --from=rabbitmq-stage /opt/rabbitmq/sbin/rabbitmq-server /usr/sbin/
-COPY --from=rabbitmq-stage /opt/rabbitmq/lib/rabbitmq_server-3/rabbitmq_env /usr/sbin/
+
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 ENV PATH="/usr/local/bin:/usr/sbin:$PATH"
