@@ -1,17 +1,31 @@
-FROM python:3.11-bullseye
-
-WORKDIR /project
-
+# Stage 1: Build the application
+FROM python:3.11-bullseye AS builder
+WORKDIR /app
 COPY requirements.txt .
-RUN python -m venv /opt/venv \
-    && /opt/venv/bin/pip install --upgrade pip \
-    && /opt/venv/bin/pip install -r requirements.txt \
-    && /opt/venv/bin/pip install pysqlite3-binary
-
+RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
+RUN pip install pysqlite3-binary
+RUN python manage.py collectstatic --noinput
+RUN python manage.py migrate
 
-ENV PATH="/opt/venv/bin:$PATH"
-ENV DJANGO_SETTINGS_MODULE=project.settings
-ENV CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
+# Stage 2: Redis
+FROM redis:alpine
 
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "project.asgi:application"]
+# Stage 3: RabbitMQ
+FROM rabbitmq:3-management
+
+# Stage 4: Nginx
+FROM nginx:latest
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./staticfiles /usr/share/nginx/html/static # Важно: скопировать статические файлы
+
+# Stage 5: Final image
+FROM python:3.11-bullseye
+WORKDIR /app
+COPY --from=builder /app /app
+COPY --from=redis / /app/redis #Копируем redis - не обязательно, только если нужны файлы redis из образа
+COPY --from=rabbitmq / /app/rabbitmq # Копируем rabbitmq - не обязательно, только если нужны файлы rabbitmq из образа
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+EXPOSE 8000
+CMD ["/app/entrypoint.sh"]
