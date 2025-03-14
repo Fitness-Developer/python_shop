@@ -7,16 +7,16 @@ COPY . .
 RUN pip install pysqlite3-binary
 RUN python manage.py collectstatic --noinput
 RUN python manage.py migrate
-
-# Создаем виртуальную среду на уровне project
 RUN python3 -m venv /project/venv
 
 # Stage 2: Redis
-FROM redis:alpine AS redis-stage
+FROM redis:6.2-alpine AS redis-stage
 
-# Stage 3: RabbitMQ
+
+# Stage 3: RabbitMQ (с установкой Erlang)
 FROM rabbitmq:3-management AS rabbitmq-stage
 COPY rabbitmq_env /opt/rabbitmq/
+
 
 # Stage 4: Nginx
 FROM nginx:latest
