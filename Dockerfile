@@ -24,7 +24,7 @@ FROM python:3.11-bullseye
 WORKDIR /project
 COPY --from=builder /project /project
 COPY --from=redis-stage /usr/local/bin/redis-server /usr/local/bin/
-COPY --from=rabbitmq-stage /usr/sbin/rabbitmq-server /usr/sbin/
+COPY --from=rabbitmq-stage /opt/rabbitmq/sbin/rabbitmq-server /usr/sbin/
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 EXPOSE 8000
