@@ -22,9 +22,9 @@ COPY ./staticfiles /usr/share/nginx/html/static # Важно: скопирова
 # Stage 5: Final image
 FROM python:3.11-bullseye
 WORKDIR /app
-COPY --from=builder /app /app
-COPY --from=redis / /app/redis #Копируем redis - не обязательно, только если нужны файлы redis из образа
-COPY --from=rabbitmq / /app/rabbitmq # Копируем rabbitmq - не обязательно, только если нужны файлы rabbitmq из образа
+COPY --from=builder /project /project
+COPY --from=redis / /project/redis #Копируем redis - не обязательно, только если нужны файлы redis из образа
+COPY --from=rabbitmq / /project/rabbitmq # Копируем rabbitmq - не обязательно, только если нужны файлы rabbitmq из образа
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 EXPOSE 8000

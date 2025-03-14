@@ -1,7 +1,7 @@
 #!/bin/bash
 # запускаем redis и rabbitmq в фоне
-/app/redis/bin/redis-server &
-/app/rabbitmq/sbin/rabbitmq-server &
+/project/redis/bin/redis-server &
+/project/rabbitmq/sbin/rabbitmq-server &
 
 # Даем время на запуск redis и rabbitmq
 sleep 10
