@@ -31,6 +31,6 @@ COPY --from=rabbitmq-stage /opt/rabbitmq/sbin/rabbitmq-server /opt/rabbitmq/sbin
 
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
-ENV PATH="/usr/local/bin:/usr/sbin:/opt/rabbitmq/sbin:$PATH" #
+ENV PATH="/usr/local/bin:/usr/sbin:/opt/rabbitmq/sbin:$PATH"
 EXPOSE 8000
 CMD ["/project/entrypoint.sh"]
