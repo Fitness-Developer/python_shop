@@ -8,6 +8,9 @@ RUN pip install pysqlite3-binary
 RUN python manage.py collectstatic --noinput
 RUN python manage.py migrate
 
+# Создаем виртуальную среду на уровне project
+RUN python3 -m venv /project/venv
+
 # Stage 2: Redis
 FROM redis:alpine AS redis-stage
 
@@ -20,17 +23,17 @@ FROM nginx:latest
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY ./staticfiles /usr/share/nginx/html/static
 
-# Stage 5: Final image (исправлено)
+# Stage 5: Final image
 FROM python:3.11-bullseye
 WORKDIR /project
 COPY --from=builder /project /project
+COPY --from=builder /project/venv /project/venv
 COPY --from=redis-stage /usr/local/bin/redis-server /usr/local/bin/
 COPY --from=rabbitmq-stage /opt/rabbitmq/ /opt/rabbitmq/
 COPY --from=rabbitmq-stage /opt/rabbitmq/sbin/rabbitmq-server /opt/rabbitmq/sbin/
 
-
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
-ENV PATH="/usr/local/bin:/usr/sbin:/opt/rabbitmq/sbin:$PATH"
+ENV PATH="/project/venv/bin:/usr/local/bin:/usr/sbin:/opt/rabbitmq/sbin:$PATH"
 EXPOSE 8000
 CMD ["/project/entrypoint.sh"]

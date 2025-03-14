@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Активируем виртуальную среду
+# Активируем виртуальную среду (исправленный путь)
 source /project/venv/bin/activate
 
 # Используйте абсолютные пути к исполняемым файлам
@@ -9,5 +9,4 @@ source /project/venv/bin/activate
 
 sleep 10
 
-# Используйте полный путь к daphne
 /project/venv/bin/daphne -b 0.0.0.0 -p 8000 project.asgi:application
