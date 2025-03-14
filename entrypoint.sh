@@ -3,16 +3,14 @@
 source /project/venv/bin/activate
 
 # Запуск RabbitMQ
-/opt/rabbitmq/sbin/rabbitmq-server -detached &
-# Проверка RabbitMQ (добавлено ожидание и проверка)
+rabbitmq-server -detached &
 until [[ $(curl -s -o /dev/null -w "%{http_code}" http://localhost:15672) == "200" ]]; do
   echo "Waiting for RabbitMQ..."
   sleep 5
 done
 
 # Запуск Redis
-/usr/local/bin/redis-server &
-# Проверка Redis (добавлено ожидание и проверка)
+redis-server &
 until [[ $(curl -s -o /dev/null -w "%{http_code}" http://localhost:6379) == "200" ]]; do
   echo "Waiting for Redis..."
   sleep 5
