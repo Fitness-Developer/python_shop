@@ -12,7 +12,7 @@ RUN python manage.py migrate
 FROM redis:alpine AS redis-stage
 
 # Stage 3: RabbitMQ (изменён)
-FROM rabbitmq:3.11-management AS rabbitmq-stage # Указана конкретная версия
+FROM rabbitmq:3.11-management AS rabbitmq-stage
 
 # Stage 4: Nginx
 FROM nginx:latest
