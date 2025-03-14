@@ -20,15 +20,17 @@ FROM nginx:latest
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY ./staticfiles /usr/share/nginx/html/static
 
-# Stage 5: Final image
+# Stage 5: Final image (исправлено)
 FROM python:3.11-bullseye
 WORKDIR /project
 COPY --from=builder /project /project
 COPY --from=redis-stage /usr/local/bin/redis-server /usr/local/bin/
 COPY --from=rabbitmq-stage /opt/rabbitmq/ /opt/rabbitmq/
+COPY --from=rabbitmq-stage /opt/rabbitmq/sbin/rabbitmq-server /opt/rabbitmq/sbin/
+
 
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
-ENV PATH="/usr/local/bin:/usr/sbin:/opt/rabbitmq/sbin:$PATH"
+ENV PATH="/usr/local/bin:/usr/sbin:/opt/rabbitmq/sbin:$PATH" #
 EXPOSE 8000
 CMD ["/project/entrypoint.sh"]
