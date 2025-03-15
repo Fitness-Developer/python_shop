@@ -2,18 +2,18 @@
 
 source /project/venv/bin/activate
 
-# Запуск RabbitMQ
+# Запуск RabbitMQ (изменено)
 rabbitmq-server -detached &
-until [[ $(curl -s -o /dev/null -w "%{http_code}" http://localhost:15672) == "200" ]]; do
-  echo "Waiting for RabbitMQ..."
+while ! rabbitmqctl status > /dev/null 2>&1; do
   sleep 5
+  echo "Waiting for RabbitMQ..."
 done
 
-# Запуск Redis
+# Запуск Redis (изменено)
 redis-server &
-until [[ $(curl -s -o /dev/null -w "%{http_code}" http://localhost:6379) == "200" ]]; do
-  echo "Waiting for Redis..."
+while ! redis-cli ping > /dev/null 2>&1; do
   sleep 5
+  echo "Waiting for Redis..."
 done
 
 sleep 10
