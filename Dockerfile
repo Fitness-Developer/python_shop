@@ -18,7 +18,7 @@ FROM redis:alpine AS redis
 FROM python:3.11-bullseye
 WORKDIR /project
 COPY --from=builder /project /project
-COPY --from=rabbitmq /usr/sbin/rabbitmq-server /usr/sbin/
+COPY --from=rabbitmq /opt/rabbitmq/sbin/rabbitmq-server /usr/sbin/ # ИЗМЕНЕНО
 COPY --from=redis /usr/local/bin/redis-server /usr/local/bin/
 
 ENV PATH="/project/venv/bin:/usr/local/bin:/usr/sbin:$PATH"
