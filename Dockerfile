@@ -14,6 +14,6 @@ ENV PATH="/opt/venv/bin:$PATH"
 ENV DJANGO_SETTINGS_MODULE=project.settings
 ENV CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
 
-VOLUME ["/project/db.sqlite3"]
+
 
 CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "project.asgi:application"]
