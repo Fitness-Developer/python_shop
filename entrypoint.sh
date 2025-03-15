@@ -1,9 +1,8 @@
 #!/bin/bash
-source /project/venv/bin/activate
-echo "Starting RabbitMQ..."
-rabbitmq-server -detached &
-echo "Starting Redis..."
+source /opt/venv/bin/activate
 redis-server &
-sleep 30 # Дайте сервисам время запуститься
-echo "Starting Daphne..."
-/project/venv/bin/daphne -b 0.0.0.0 -p 8000 project.asgi:application
+rabbitmq-server -detached &
+sleep 30 # Дайте время на запуск сервисов
+gunicorn --bind 0.0.0.0:8000 project.asgi:application & # или daphne
+celery -A project worker -l info -B &
+wait

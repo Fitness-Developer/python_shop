@@ -2,11 +2,11 @@
 FROM python:3.11-bullseye AS builder
 WORKDIR /project
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python -m venv /opt/venv \
+    && /opt/venv/bin/pip install --upgrade pip \
+    && /opt/venv/bin/pip install -r requirements.txt \
+    && /opt/venv/bin/pip install pysqlite3-binary
 COPY . .
-RUN python3 -m venv /project/venv
-RUN . /project/venv/bin/activate && pip install -r requirements.txt
-
 
 # Stage 2: RabbitMQ (используем готовый образ)
 FROM rabbitmq:3-management AS rabbitmq
@@ -18,9 +18,11 @@ FROM redis:alpine AS redis
 FROM python:3.11-bullseye
 WORKDIR /project
 COPY --from=builder /project /project
-COPY --from=rabbitmq /opt/rabbitmq/sbin/rabbitmq-server /usr/sbin/
+COPY --from=rabbitmq /opt/rabbitmq/sbin/rabbitmq-server /usr/local/bin/
 COPY --from=redis /usr/local/bin/redis-server /usr/local/bin/
-
-ENV PATH="/project/venv/bin:/usr/local/bin:/usr/sbin:$PATH"
-EXPOSE 8000
-CMD ["/project/entrypoint.sh"]
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENV PATH="/opt/venv/bin:/usr/local/bin:$PATH"
+ENV DJANGO_SETTINGS_MODULE=project.settings
+ENV CELERY_BROKER_URL=amqp://guest:guest@localhost:5672//
+CMD ["/entrypoint.sh"]
