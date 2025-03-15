@@ -1,8 +1,20 @@
 #!/bin/bash
-source /opt/venv/bin/activate
-redis-server &
+# Активируем виртуальную среду
+. /opt/venv/bin/activate
+
+# Запускаем сервисы, используя их собственные средства
+# Это гораздо надёжнее, чем напрямую запускать исполняемые файлы.
+# Также, используем ожидание завершения, для большей надёжности.
 rabbitmq-server -detached &
-sleep 30 # Дайте время на запуск сервисов
-gunicorn --bind 0.0.0.0:8000 project.asgi:application & # или daphne
+redis-server &
+
+# Даём время на запуск
+sleep 30
+
+# Запускаем gunicorn или daphne
+gunicorn --bind 0.0.0.0:8000 project.asgi:application &
+
+# Запускаем Celery worker в фоне
 celery -A project worker -l info -B &
+
 wait
