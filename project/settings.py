@@ -208,16 +208,28 @@ TEMPLATES = [
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'pythonshop', # Имя базы данных
+#         'USER': 'admin', # Имя пользователя
+#         'PASSWORD': 'Global228', # Пароль
+#         'HOST': 'host.docker.internal',
+#         'PORT': '5432', # Порт (обычно 5432 для PostgreSQL)
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pythonshop', # Имя базы данных
-        'USER': 'admin', # Имя пользователя
-        'PASSWORD': 'Global228', # Пароль
-        'HOST': 'host.docker.internal',
-        'PORT': '5432', # Порт (обычно 5432 для PostgreSQL)
+        'ENGINE': os.environ.get('DATABASE_URL_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': os.environ.get('DATABASE_URL_NAME', 'pythonshop'),
+        'USER': os.environ.get('DATABASE_URL_USER', 'admin'),
+        'PASSWORD': os.environ.get('DATABASE_URL_PASSWORD', 'Global228'),
+        'HOST': os.environ.get('DATABASE_URL_HOST', 'db'),
+        'PORT': os.environ.get('DATABASE_URL_PORT', '5432'),
     }
 }
+
 
 
 # Password validation
