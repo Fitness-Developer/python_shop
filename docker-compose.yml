@@ -5,7 +5,8 @@ services:
     command: bash -c "python manage.py migrate && daphne -b 0.0.0.0 -p 8000 project.asgi:application"
     volumes:
       - .:/project
-      - ./db.sqlite3:/project/db.sqlite3
+      - ./staticfiles:/usr/share/nginx/html/static
+      - ./media:/var/www/media
     ports:
       - "8000:8000"
     depends_on:
@@ -47,3 +48,4 @@ services:
       - ./media:/var/www/media
     depends_on:
       - web
+#

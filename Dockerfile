@@ -6,7 +6,7 @@ COPY requirements.txt .
 RUN python -m venv /opt/venv \
     && /opt/venv/bin/pip install --upgrade pip \
     && /opt/venv/bin/pip install -r requirements.txt \
-    && /opt/venv/bin/pip install pysqlite3-binary # Установка pysqlite3-binary - здесь важно
+    && /opt/venv/bin/pip install psycopg2-binary # Установка psycopg2-binary
 
 COPY . .
 
@@ -16,4 +16,4 @@ ENV CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
 
 
 
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "project.asgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "project.asgi:application"]

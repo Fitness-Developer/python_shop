@@ -81,9 +81,9 @@ CHANNEL_LAYERS = {
 }
 
 # Настройки для Celery
-# CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
 CELERY_RESULT_BACKEND = 'django-db'
-CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq:5672//'
+# CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq:5672//'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_WORKER_CONCURRENCY = 1
@@ -201,10 +201,21 @@ TEMPLATES = [
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'pythonshop', # Имя базы данных
+        'USER': 'admin', # Имя пользователя
+        'PASSWORD': 'Global228', # Пароль
+        'HOST': 'host.docker.internal',
+        'PORT': '5432', # Порт (обычно 5432 для PostgreSQL)
     }
 }
 
