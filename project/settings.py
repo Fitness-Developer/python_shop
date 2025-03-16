@@ -224,7 +224,7 @@ DATABASES = {
         'ENGINE': os.environ.get('DATABASE_URL_ENGINE', 'django.db.backends.postgresql'),
         'NAME': os.environ.get('DATABASE_URL_NAME', 'pythonshop'),
         'USER': os.environ.get('DATABASE_URL_USER', 'admin'),
-        'PASSWORD': os.environ.get('DATABASE_URL_PASSWORD', 'Global228'),
+        'PASSWORD': os.environ.get('DATABASE_URL_PASSWORD', 'DxJ5Ahiwllt8bmCUUYwDxSxtuWPVqyWU'),
         'HOST': os.environ.get('DATABASE_URL_HOST', 'dpg-cvb7oonnoe9s73fi9klg-a'),
         'PORT': os.environ.get('DATABASE_URL_PORT', '5432'),
     }
