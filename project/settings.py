@@ -225,7 +225,7 @@ DATABASES = {
         'NAME': os.environ.get('DATABASE_URL_NAME', 'pythonshop'),
         'USER': os.environ.get('DATABASE_URL_USER', 'admin'),
         'PASSWORD': os.environ.get('DATABASE_URL_PASSWORD', 'Global228'),
-        'HOST': os.environ.get('DATABASE_URL_HOST', 'db'),
+        'HOST': os.environ.get('DATABASE_URL_HOST', 'dpg-cvb7oonnoe9s73fi9klg-a'),
         'PORT': os.environ.get('DATABASE_URL_PORT', '5432'),
     }
 }
