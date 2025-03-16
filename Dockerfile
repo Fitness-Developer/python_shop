@@ -17,7 +17,7 @@ RUN /opt/venv/bin/python manage.py migrate
 
 ENV PATH="/opt/venv/bin:$PATH"
 ENV DJANGO_SETTINGS_MODULE=project.settings
-ENV CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
+
 
 
 
