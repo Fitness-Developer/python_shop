@@ -1,4 +1,5 @@
 Django+jinja project:
+- PostgreSQL
 - Yookassa
 - message rewiews(rabbitMQ)
 - django chanels + redis
